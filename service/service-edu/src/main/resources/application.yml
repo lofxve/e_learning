@@ -1,0 +1,34 @@
+####  application-dev.yml
+server:
+  port: 8081
+mybatis-plus:
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations: classpath:com/wzd/eduservice/*/mapper/*.xml
+  global-config:
+    db-config:
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+spring:
+  profiles:
+    active: dev
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/e_learning?useUnicode=true&characterEncoding=UTF8&serverTimezone=UTC
+    username: root
+    password: root
+  hikari:
+    connection-test-query: SELECT 1
+    connection-timeout: 60000
+    idle-timeout: 500000
+    max-lifetime: 540000
+    maximum-pool-size: 12
+    minimum-idle: 10
+    pool-name: GuliHikariPool
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+#logging:
+#  level:
+#    root: info
