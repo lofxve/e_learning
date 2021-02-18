@@ -17,13 +17,12 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * <p>
- * 讲师 前端控制器
- * </p>
- *
- * @author wzd
- * @since 2021-01-30
- */
+ * @Author lofxve
+ * @Description // 讲师管理
+ * @Date 9:54 2021/2/18
+ * @Param
+ * @return
+ **/
 @CrossOrigin //跨域
 @RestController
 @Api(tags = "讲师管理")
@@ -41,7 +40,7 @@ public class EduTeacherController {
 
     @DeleteMapping("{id}")
     @ApiOperation(value = "根据ID删除讲师")
-    public R removeTeacherById(@ApiParam(name = "id", value = "讲师ID", required = true) @PathVariable Long id) {
+    public R removeTeacherById(@ApiParam(name = "id", value = "讲师ID", required = true) @PathVariable String id) {
         boolean flag = eduTeacherService.removeById(id);
         if (flag) {
             return R.ok();
@@ -82,6 +81,9 @@ public class EduTeacherController {
             eduTeacherQueryWrapper.le("gmt_create", end);
         }
 
+        // 根据创建时间降序排列
+        eduTeacherQueryWrapper.orderByDesc("gmt_create");
+
         // 调用方法实现分页
         eduTeacherService.page(eduTeacherPage, eduTeacherQueryWrapper);
 
@@ -108,7 +110,7 @@ public class EduTeacherController {
     public R getTeacherById(@ApiParam(name = "id", value = "讲师ID", required = true)
                             @PathVariable String id) {
         EduTeacher teacher = eduTeacherService.getById(id);
-        return R.ok().data("item", teacher);
+        return R.ok().data("teacher", teacher);
     }
 
     @PostMapping("updateTeacher")
