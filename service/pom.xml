@@ -12,6 +12,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>service-edu</module>
+        <module>service-oss</module>
     </modules>
     <dependencies>
         <dependency>

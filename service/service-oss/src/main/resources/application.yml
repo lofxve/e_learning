@@ -1,0 +1,14 @@
+aliyun:
+  oss:
+    file:
+      bucketname: e-learning-lofxve
+      endpoint: oss-cn-beijing.aliyuncs.com
+      keyid: LTAI4GByaaa6Rpjcr7FD1YyN
+      keysecret: 2ORb9i5tjuCxhiOm3IebNFXq00IXe8
+server:
+  port: 8002
+spring:
+  application:
+    name: service-oss
+  profiles:
+    active: dev
