@@ -2,7 +2,10 @@ package com.wzd.eduservice.service;
 
 import com.wzd.eduservice.entity.EduSubject;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.wzd.eduservice.entity.subject.SubjectNestedVo;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 /**
  * <p>
@@ -15,4 +18,6 @@ import org.springframework.web.multipart.MultipartFile;
 public interface EduSubjectService extends IService<EduSubject> {
 
     void saveSubject(MultipartFile file,EduSubjectService subjectService);
+
+    List<SubjectNestedVo> nestedList();
 }
