@@ -32,12 +32,27 @@ public class EduCourseController {
     public R addCourseInfo(@ApiParam(name = "CourseInfoVo", value = "课程基本信息", required = true)
                            @RequestBody CourseInfoVo courseInfoVo) {
         String courseId = courseService.saveCourseInfo(courseInfoVo);
-        if(!StringUtils.isEmpty(courseId)){
+        if (!StringUtils.isEmpty(courseId)) {
             return R.ok().data("courseId", courseId);
-        }else{
+        } else {
             return R.error().message("保存失败");
         }
     }
 
+    @GetMapping("getCourseInfo/{courseId}")
+    @ApiOperation(value = "根据课程id查询课程信息")
+    public R getCourseInfo(@ApiParam(name = "courseId", value = "课程ID", required = true)
+                           @PathVariable String courseId) {
+        CourseInfoVo course = courseService.getCourseInfoById(courseId);
+        return R.ok().data("itmes", course);
+    }
+
+    @PostMapping("updateCourseInfo")
+    @ApiOperation(value = "修改课程信息")
+    public R updateCourseInfo(@ApiParam(name = "CourseInfoVo", value = "课程基本信息", required = true)
+                              @RequestBody CourseInfoVo courseInfoVo) {
+        courseService.updateCourseInfo(courseInfoVo);
+        return R.ok();
+    }
 }
 

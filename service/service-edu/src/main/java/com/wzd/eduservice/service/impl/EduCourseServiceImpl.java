@@ -48,4 +48,38 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
 
         return course.getId();
     }
+
+    @Override
+    public CourseInfoVo getCourseInfoById(String courseId) {
+        // 获取课程信息
+        EduCourse course = this.getById(courseId);
+        if (course == null) {
+            throw new BaseException(20001, "数据不存在");
+        }
+        // 组装
+        CourseInfoVo courseInfoVo = new CourseInfoVo();
+        BeanUtils.copyProperties(course, courseInfoVo);
+
+        // 获取课程描述
+        EduCourseDescription courseDescription = courseDescriptionService.getById(courseId);
+        if (courseDescription != null) {
+            courseInfoVo.setDescription(courseDescription.getDescription());
+        }
+        return courseInfoVo;
+    }
+
+    @Override
+    public void updateCourseInfo(CourseInfoVo courseInfoVo) {
+        // 修改课程表
+        EduCourse course = new EduCourse();
+        BeanUtils.copyProperties(courseInfoVo, course);
+        int update = baseMapper.updateById(course);
+        if (update == 0) {
+            throw new BaseException(20001, "修改课程失败");
+        }
+        // 修改课程描述表
+        EduCourseDescription courseDescription = new EduCourseDescription();
+        BeanUtils.copyProperties(courseInfoVo, courseDescription);
+        courseDescriptionService.updateById(courseDescription);
+    }
 }
