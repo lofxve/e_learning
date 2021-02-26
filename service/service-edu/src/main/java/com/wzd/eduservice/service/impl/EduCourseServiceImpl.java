@@ -1,17 +1,16 @@
 package com.wzd.eduservice.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wzd.baseservice.exceptionHandler.BaseException;
 import com.wzd.eduservice.entity.EduCourse;
 import com.wzd.eduservice.entity.EduCourseDescription;
 import com.wzd.eduservice.entity.vo.CourseInfoVo;
-import com.wzd.eduservice.mapper.EduCourseDescriptionMapper;
+import com.wzd.eduservice.entity.vo.CoursePublishVo;
 import com.wzd.eduservice.mapper.EduCourseMapper;
 import com.wzd.eduservice.service.EduCourseDescriptionService;
 import com.wzd.eduservice.service.EduCourseService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 /**
@@ -27,6 +26,8 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
     @Autowired
     private EduCourseDescriptionService courseDescriptionService;
 
+    @Autowired
+    private EduCourseMapper courseMapper;
     @Override
     public String saveCourseInfo(CourseInfoVo courseInfoVo) {
         // 添加课程基本信息
@@ -81,5 +82,19 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         EduCourseDescription courseDescription = new EduCourseDescription();
         BeanUtils.copyProperties(courseInfoVo, courseDescription);
         courseDescriptionService.updateById(courseDescription);
+    }
+
+    @Override
+    public CoursePublishVo getCoursePublishVoById(String id) {
+        return baseMapper.selectCoursePublishVoById(id);
+    }
+
+    @Override
+    public boolean publishCourseById(String id) {
+        EduCourse course = new EduCourse();
+        course.setId(id);
+        course.setStatus(EduCourse.COURSE_NORMAL);
+        Integer count = baseMapper.updateById(course);
+        return null != count && count > 0;
     }
 }

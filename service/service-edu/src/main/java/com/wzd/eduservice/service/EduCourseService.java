@@ -1,8 +1,9 @@
 package com.wzd.eduservice.service;
 
-import com.wzd.eduservice.entity.EduCourse;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.wzd.eduservice.entity.EduCourse;
 import com.wzd.eduservice.entity.vo.CourseInfoVo;
+import com.wzd.eduservice.entity.vo.CoursePublishVo;
 
 /**
  * <p>
@@ -19,4 +20,8 @@ public interface EduCourseService extends IService<EduCourse> {
     CourseInfoVo getCourseInfoById(String courseId);
 
     void updateCourseInfo(CourseInfoVo courseInfoVo);
+
+    CoursePublishVo getCoursePublishVoById(String id);
+
+    boolean publishCourseById(String id);
 }

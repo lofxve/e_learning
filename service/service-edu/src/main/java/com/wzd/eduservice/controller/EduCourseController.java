@@ -3,6 +3,7 @@ package com.wzd.eduservice.controller;
 
 import com.wzd.commonutils.R;
 import com.wzd.eduservice.entity.vo.CourseInfoVo;
+import com.wzd.eduservice.entity.vo.CoursePublishVo;
 import com.wzd.eduservice.service.EduCourseService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -53,6 +54,28 @@ public class EduCourseController {
                               @RequestBody CourseInfoVo courseInfoVo) {
         courseService.updateCourseInfo(courseInfoVo);
         return R.ok();
+    }
+
+    @ApiOperation(value = "根据ID获取课程发布信息")
+    @GetMapping("getCoursePublishVoById/{id}")
+    public R getCoursePublishVoById(
+            @ApiParam(name = "id", value = "课程ID", required = true)
+            @PathVariable String id) {
+        CoursePublishVo courseInfoForm = courseService.getCoursePublishVoById(id);
+        return R.ok().data("item", courseInfoForm);
+    }
+
+    @ApiOperation(value = "根据id发布课程")
+    @PostMapping("publishCourseById/{id}")
+    public R publishCourseById(
+            @ApiParam(name = "id", value = "课程ID", required = true)
+            @PathVariable String id) {
+        boolean b = courseService.publishCourseById(id);
+        if (b) {
+            return R.ok();
+        } else {
+            return R.error();
+        }
     }
 }
 
