@@ -1,9 +1,12 @@
 package com.wzd.eduservice.controller;
 
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wzd.commonutils.R;
+import com.wzd.eduservice.entity.EduCourse;
 import com.wzd.eduservice.entity.vo.CourseInfoVo;
 import com.wzd.eduservice.entity.vo.CoursePublishVo;
+import com.wzd.eduservice.entity.vo.CourseQuery;
 import com.wzd.eduservice.service.EduCourseService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -11,6 +14,8 @@ import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * <p>
@@ -27,6 +32,25 @@ import org.springframework.web.bind.annotation.*;
 public class EduCourseController {
     @Autowired
     private EduCourseService courseService;
+
+    @ApiOperation(value = "分页课程列表")
+    @GetMapping("queryCourseByPage/{page}/{limit}")
+    public R pageQuery(
+            @ApiParam(name = "page", value = "当前页码", required = true)
+            @PathVariable Long page,
+            @ApiParam(name = "limit", value = "每页记录数", required = true)
+            @PathVariable Long limit,
+            @ApiParam(name = "courseQuery", value = "查询对象", required = false)
+             CourseQuery courseQuery) {
+
+        Page<EduCourse> pageParam = new Page<>(page, limit);
+        courseService.pageQuery(pageParam, courseQuery);
+        List<EduCourse> records = pageParam.getRecords();
+
+        long total = pageParam.getTotal();
+
+        return R.ok().data("total", total).data("rows", records);
+    }
 
     @PostMapping("addCourseInfo")
     @ApiOperation(value = "添加课程信息")
