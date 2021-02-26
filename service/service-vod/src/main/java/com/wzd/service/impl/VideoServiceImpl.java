@@ -1,10 +1,16 @@
 package com.wzd.service.impl;
 
+import com.aliyun.oss.ClientException;
 import com.aliyun.vod.upload.impl.UploadVideoImpl;
 import com.aliyun.vod.upload.req.UploadStreamRequest;
 import com.aliyun.vod.upload.resp.UploadStreamResponse;
+import com.aliyuncs.DefaultAcsClient;
+import com.aliyuncs.exceptions.ServerException;
+import com.aliyuncs.vod.model.v20170321.DeleteVideoRequest;
+import com.aliyuncs.vod.model.v20170321.DeleteVideoResponse;
 import com.wzd.baseservice.exceptionHandler.BaseException;
 import com.wzd.service.VideoService;
+import com.wzd.utils.AliyunVodSDKUtils;
 import com.wzd.utils.ConstantPropertiesUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -52,6 +58,30 @@ public class VideoServiceImpl implements VideoService {
             return videoId;
         } catch (IOException e) {
             throw new BaseException(20001, "视频服务上传失败");
+        }
+    }
+
+    @Override
+    public void removeVideo(String videoId) {
+        try{
+            DefaultAcsClient client = AliyunVodSDKUtils.initVodClient(
+                    ConstantPropertiesUtil.ACCESS_KEY_ID,
+                    ConstantPropertiesUtil.ACCESS_KEY_SECRET);
+
+            DeleteVideoRequest request = new DeleteVideoRequest();
+
+            request.setVideoIds(videoId);
+
+            DeleteVideoResponse response = client.getAcsResponse(request);
+
+            System.out.print("RequestId = " + response.getRequestId() + "\n");
+
+        }catch (ClientException e){
+            throw new BaseException(20001, "视频删除失败");
+        } catch (ServerException e) {
+            e.printStackTrace();
+        } catch (com.aliyuncs.exceptions.ClientException e) {
+            e.printStackTrace();
         }
     }
 }
