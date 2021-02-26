@@ -10,8 +10,10 @@ import com.wzd.eduservice.entity.vo.CourseInfoVo;
 import com.wzd.eduservice.entity.vo.CoursePublishVo;
 import com.wzd.eduservice.entity.vo.CourseQuery;
 import com.wzd.eduservice.mapper.EduCourseMapper;
+import com.wzd.eduservice.service.EduChapterService;
 import com.wzd.eduservice.service.EduCourseDescriptionService;
 import com.wzd.eduservice.service.EduCourseService;
+import com.wzd.eduservice.service.EduVideoService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,12 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
 
     @Autowired
     private EduCourseMapper courseMapper;
+
+    @Autowired
+    private EduVideoService videoService;
+
+    @Autowired
+    private EduChapterService chapterService;
 
     @Override
     public String saveCourseInfo(CourseInfoVo courseInfoVo) {
@@ -133,7 +141,20 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         if (!StringUtils.isEmpty(subjectId)) {
             queryWrapper.ge("subject_id", subjectId);
         }
-
         baseMapper.selectPage(pageParam, queryWrapper);
+    }
+
+    @Override
+    public boolean removeCourseById(String courseId) {
+        // 根据课程id删除小结
+        videoService.removeByCourseId(courseId);
+        // 根据课程id删除章节
+        chapterService.removeByCourseId(courseId);
+        // 删除课程描述
+        courseDescriptionService.removeById(courseId);
+        // 删除课程
+        Integer count = baseMapper.deleteById(courseId);
+
+        return null != count && count > 0;
     }
 }

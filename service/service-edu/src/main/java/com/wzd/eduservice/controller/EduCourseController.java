@@ -33,6 +33,19 @@ public class EduCourseController {
     @Autowired
     private EduCourseService courseService;
 
+    @ApiOperation(value = "根据ID删除课程")
+    @DeleteMapping("deleteCourseById/{id}")
+    public R removeById(
+            @ApiParam(name = "id", value = "课程ID", required = true)
+            @PathVariable String id){
+        boolean result = courseService.removeCourseById(id);
+        if(result){
+            return R.ok();
+        }else{
+            return R.error().message("删除失败");
+        }
+    }
+
     @ApiOperation(value = "分页课程列表")
     @GetMapping("queryCourseByPage/{page}/{limit}")
     public R pageQuery(

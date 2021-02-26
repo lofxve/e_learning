@@ -1,7 +1,7 @@
 package com.wzd.eduservice.service;
 
-import com.wzd.eduservice.entity.EduVideo;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.wzd.eduservice.entity.EduVideo;
 
 /**
  * <p>
@@ -12,5 +12,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2021-02-24
  */
 public interface EduVideoService extends IService<EduVideo> {
-
+    boolean removeByCourseId(String courseId);
 }

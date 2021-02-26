@@ -1,7 +1,7 @@
 package com.wzd.eduservice.service;
 
-import com.wzd.eduservice.entity.EduChapter;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.wzd.eduservice.entity.EduChapter;
 import com.wzd.eduservice.entity.capter.ChapterVo;
 
 import java.util.List;
@@ -19,4 +19,6 @@ public interface EduChapterService extends IService<EduChapter> {
     List<ChapterVo> getChapterVideo(String courseId);
 
     boolean deleteChapter(String chapterId);
+
+    void removeByCourseId(String courseId);
 }
