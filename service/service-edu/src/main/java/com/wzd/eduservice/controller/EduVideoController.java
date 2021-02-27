@@ -1,6 +1,7 @@
 package com.wzd.eduservice.controller;
 
 
+import com.wzd.baseservice.exceptionHandler.BaseException;
 import com.wzd.commonutils.R;
 import com.wzd.eduservice.client.VodClient;
 import com.wzd.eduservice.entity.EduVideo;
@@ -8,6 +9,7 @@ import com.wzd.eduservice.service.EduVideoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -68,12 +70,20 @@ public class EduVideoController {
     @DeleteMapping("deleteVideo/{videoId}")
     public R deleteVideo(@ApiParam(name = "videoId", value = "小结ID", required = true)
                          @PathVariable String videoId) {
-        EduVideo video = videoService.getById(videoId);
-        String videoSourceId = video.getVideoSourceId();
-        // 如果存在视频id
-        if (videoSourceId != null) {
-            // 远程调用
-            vodClient.deleteVideoById(videoSourceId);
+        try {
+            EduVideo video = videoService.getById(videoId);
+            String videoSourceId = video.getVideoSourceId();
+            // 如果存在视频id
+            if (!StringUtils.isEmpty(videoSourceId)) {
+                // 远程调用
+                R r = vodClient.deleteVideoById(videoSourceId);
+                if (r.getCode() == 20001) {
+                    throw new BaseException(r.getCode(), r.getMessage()+"删除视频失败，服务宕机...");
+                }
+            }
+        } catch (BaseException e) {
+            // 视频id允许为空
+            e.printStackTrace();
         }
 
         boolean b = videoService.removeById(videoId);

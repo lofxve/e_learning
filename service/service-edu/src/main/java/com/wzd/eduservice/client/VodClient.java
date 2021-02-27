@@ -1,6 +1,7 @@
 package com.wzd.eduservice.client;
 
 import com.wzd.commonutils.R;
+import com.wzd.eduservice.client.impl.VodFileDegradeFeignClientImpl;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -17,7 +18,7 @@ import java.util.List;
  * @Date 2021/2/27 17:36
  * @Version 1.0
  */
-@FeignClient("service-vod")
+@FeignClient(name = "service-vod", fallback = VodFileDegradeFeignClientImpl.class) // 调用服务的名称
 @Component
 public interface VodClient {
     // 定义调用方法的路径
