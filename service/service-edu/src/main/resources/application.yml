@@ -2,14 +2,16 @@
 server:
   port: 8001
 mybatis-plus:
-#  configuration:
-#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  #  configuration:
+  #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   mapper-locations: classpath:com/wzd/eduservice/mapper/xml/*.xml
   global-config:
     db-config:
       logic-delete-value: 1
       logic-not-delete-value: 0
 spring:
+  application:
+    name: service-edu
   profiles:
     active: dev
   datasource:
@@ -29,6 +31,10 @@ spring:
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
 #logging:
 #  level:
 #    root: info
