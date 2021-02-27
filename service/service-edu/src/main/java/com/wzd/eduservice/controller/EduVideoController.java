@@ -2,6 +2,7 @@ package com.wzd.eduservice.controller;
 
 
 import com.wzd.commonutils.R;
+import com.wzd.eduservice.client.VodClient;
 import com.wzd.eduservice.entity.EduVideo;
 import com.wzd.eduservice.service.EduVideoService;
 import io.swagger.annotations.Api;
@@ -27,6 +28,9 @@ public class EduVideoController {
 
     @Autowired
     private EduVideoService videoService;
+
+    @Autowired
+    private VodClient vodClient;
 
     @ApiOperation(value = "添加小结")
     @PostMapping("addVideo")
@@ -55,16 +59,23 @@ public class EduVideoController {
     @ApiOperation(value = "获取小结")
     @GetMapping("getVideo/{videoId}")
     public R getVideo(@ApiParam(name = "videoId", value = "小结ID", required = true)
-                         @PathVariable String videoId) {
+                      @PathVariable String videoId) {
         EduVideo video = videoService.getById(videoId);
-        return R.ok().data("items",video);
+        return R.ok().data("items", video);
     }
 
     @ApiOperation(value = "删除小结")
     @DeleteMapping("deleteVideo/{videoId}")
     public R deleteVideo(@ApiParam(name = "videoId", value = "小结ID", required = true)
                          @PathVariable String videoId) {
-        // TODO: 2021/2/25 后期删除小结的时候需要删除小结下的视频
+        EduVideo video = videoService.getById(videoId);
+        String videoSourceId = video.getVideoSourceId();
+        // 如果存在视频id
+        if (videoSourceId != null) {
+            // 远程调用
+            vodClient.deleteVideoById(videoSourceId);
+        }
+
         boolean b = videoService.removeById(videoId);
         if (b) {
             return R.ok();
