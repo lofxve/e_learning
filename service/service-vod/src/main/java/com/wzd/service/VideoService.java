@@ -2,6 +2,8 @@ package com.wzd.service;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 /**
  * @ClassName VideoService
  * @Author lofxve
@@ -12,4 +14,6 @@ public interface VideoService {
     String uploadVideo(MultipartFile file);
 
     void removeVideo(String videoId);
+
+    void deleteBatch(List videoIdList);
 }

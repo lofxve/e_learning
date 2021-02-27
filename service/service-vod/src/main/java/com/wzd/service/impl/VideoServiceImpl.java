@@ -13,12 +13,16 @@ import com.wzd.service.VideoService;
 import com.wzd.utils.AliyunVodSDKUtils;
 import com.wzd.utils.ConstantPropertiesUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
+import org.junit.Test;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @ClassName VideoServiceImpl
@@ -83,5 +87,41 @@ public class VideoServiceImpl implements VideoService {
         } catch (com.aliyuncs.exceptions.ClientException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void deleteBatch(List videoIdList) {
+        try{
+            DefaultAcsClient client = AliyunVodSDKUtils.initVodClient(
+                    ConstantPropertiesUtil.ACCESS_KEY_ID,
+                    ConstantPropertiesUtil.ACCESS_KEY_SECRET);
+
+            DeleteVideoRequest request = new DeleteVideoRequest();
+
+            String videoIds = StringUtils.join(videoIdList.toArray(), ',');
+            request.setVideoIds(videoIds);
+
+            DeleteVideoResponse response = client.getAcsResponse(request);
+
+            System.out.print("RequestId = " + response.getRequestId() + "\n");
+
+        }catch (ClientException e){
+            throw new BaseException(20001, "视频删除失败");
+        } catch (ServerException e) {
+            e.printStackTrace();
+        } catch (com.aliyuncs.exceptions.ClientException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public  void main() {
+        ArrayList<Integer> integers = new ArrayList<>();
+        integers.add(1);
+        integers.add(2);
+        integers.add(3);
+        integers.add(4);
+        String join = StringUtils.join(integers.toArray(), ",");
+        System.out.println(join);
     }
 }
