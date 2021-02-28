@@ -32,15 +32,7 @@ public class BannerFrontController {
     @ApiOperation(value = "获取首页banner")
     @GetMapping("getAllBanner")
     public R index() {
-        // 获取banner
-        QueryWrapper<CrmBanner> queryWrapper = new QueryWrapper<>();
-        // 根据id倒叙排列
-        queryWrapper.orderByDesc("id");
-        // last拼接，获取前两条记录
-        queryWrapper.last("LIMIT 2");
-
-        List<CrmBanner> list = bannerService.list(queryWrapper);
+        List<CrmBanner> list = bannerService.getAllBanner();
         return R.ok().data("bannerList", list);
     }
-
 }
