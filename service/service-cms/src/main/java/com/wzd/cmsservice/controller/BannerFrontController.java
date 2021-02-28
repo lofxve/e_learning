@@ -1,5 +1,6 @@
 package com.wzd.cmsservice.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.wzd.cmsservice.entity.CrmBanner;
 import com.wzd.cmsservice.service.CrmBannerService;
 import com.wzd.commonutils.R;
@@ -20,7 +21,7 @@ import java.util.List;
  * @Version 1.0
  */
 @RestController
-@RequestMapping("/crmservice/banner")
+@RequestMapping("/cmsservice/banner")
 @Api("网站首页Banner列表")
 @CrossOrigin //跨域
 public class BannerFrontController {
@@ -31,7 +32,14 @@ public class BannerFrontController {
     @ApiOperation(value = "获取首页banner")
     @GetMapping("getAllBanner")
     public R index() {
-        List<CrmBanner> list = bannerService.list(null);
+        // 获取banner
+        QueryWrapper<CrmBanner> queryWrapper = new QueryWrapper<>();
+        // 根据id倒叙排列
+        queryWrapper.orderByDesc("id");
+        // last拼接，获取前两条记录
+        queryWrapper.last("LIMIT 2");
+
+        List<CrmBanner> list = bannerService.list(queryWrapper);
         return R.ok().data("bannerList", list);
     }
 
