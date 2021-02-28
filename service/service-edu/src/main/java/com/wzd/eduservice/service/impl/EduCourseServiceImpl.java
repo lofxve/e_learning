@@ -17,7 +17,11 @@ import com.wzd.eduservice.service.EduVideoService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * <p>
@@ -41,6 +45,7 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
     @Autowired
     private EduChapterService chapterService;
 
+    @CacheEvict(value = "course", allEntries = true)
     @Override
     public String saveCourseInfo(CourseInfoVo courseInfoVo) {
         // 添加课程基本信息
@@ -82,6 +87,7 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         return courseInfoVo;
     }
 
+    @CacheEvict(value = "course", allEntries = true)
     @Override
     public void updateCourseInfo(CourseInfoVo courseInfoVo) {
         // 修改课程表
@@ -102,6 +108,7 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         return baseMapper.selectCoursePublishVoById(id);
     }
 
+    @CacheEvict(value = "course", allEntries = true)
     @Override
     public boolean publishCourseById(String id) {
         EduCourse course = new EduCourse();
@@ -144,6 +151,7 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         baseMapper.selectPage(pageParam, queryWrapper);
     }
 
+    @CacheEvict(value = "course", allEntries = true)
     @Override
     public boolean removeCourseById(String courseId) {
         // 根据课程id删除小结
@@ -156,5 +164,15 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         Integer count = baseMapper.deleteById(courseId);
 
         return null != count && count > 0;
+    }
+
+    @Cacheable(value = "course", key = "'selectIndexList'")
+    @Override
+    public List<EduCourse> getIndexCourse() {
+        //获取前8条热门课程
+        QueryWrapper<EduCourse> courseQueryWrapper = new QueryWrapper<>();
+        courseQueryWrapper.orderByDesc("view_count");
+        courseQueryWrapper.last("LIMIT 8");
+        return baseMapper.selectList(courseQueryWrapper);
     }
 }

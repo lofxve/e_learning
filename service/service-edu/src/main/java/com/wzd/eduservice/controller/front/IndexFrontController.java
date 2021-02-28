@@ -35,16 +35,9 @@ public class IndexFrontController {
     @GetMapping("index")
     public R index() {
         //获取前8条热门课程
-        QueryWrapper<EduCourse> courseQueryWrapper = new QueryWrapper<>();
-        courseQueryWrapper.orderByDesc("view_count");
-        courseQueryWrapper.last("LIMIT 8");
-        List<EduCourse> courses = courseService.list(courseQueryWrapper);
-
+        List<EduCourse> courses = courseService.getIndexCourse();
         //查询前4条名师
-        QueryWrapper<EduTeacher> teacherQueryWrapper = new QueryWrapper<>();
-        teacherQueryWrapper.orderByDesc("ID");
-        teacherQueryWrapper.last("LIMIT 4");
-        List<EduTeacher> teachers = teacherService.list(teacherQueryWrapper);
+        List<EduTeacher> teachers = teacherService.getIndexTeacher();
         return R.ok().data("teachers", teachers).data("courses", courses);
     }
 }
