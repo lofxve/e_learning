@@ -1,11 +1,13 @@
 package com.wzd.ucenterservice.controller;
 
 
+import com.wzd.commonutils.R;
+import com.wzd.ucenterservice.entity.UcenterMember;
+import com.wzd.ucenterservice.service.UcenterMemberService;
 import io.swagger.annotations.Api;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RestController;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * <p>
@@ -16,10 +18,18 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2021-03-01
  */
 @CrossOrigin //跨域
-@Api(tags = "课程章节")
+@Api(tags = "用户中心")
 @RestController
-@RequestMapping("/ucenterservice/ucenter-member")
+@RequestMapping("/ucenterservice/member")
 public class UcenterMemberController {
+    @Autowired
+    private UcenterMemberService memberService;
 
+    @ApiOperation("登录")
+    @PostMapping("login")
+    public R loginUser(@RequestBody UcenterMember member) {
+        String token = memberService.login(member);
+        return R.ok().data("toke",token);
+    }
 }
 

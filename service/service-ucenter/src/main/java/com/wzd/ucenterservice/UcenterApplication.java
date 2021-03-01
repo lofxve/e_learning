@@ -3,6 +3,7 @@ package com.wzd.ucenterservice;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
  * @ClassName UcenterApplication
@@ -10,6 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @Date 2021/3/1 21:34
  * @Version 1.0
  */
+@EnableSwagger2
 @SpringBootApplication
 @MapperScan("com.wzd.ucenterservice.mapper")
 public class UcenterApplication {
