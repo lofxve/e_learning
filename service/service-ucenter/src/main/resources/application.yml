@@ -3,6 +3,8 @@ mybatis-plus:
 server:
   port: 8006
 spring:
+  profiles:
+    active: dev
   application:
     name: service-ucenter
   datasource:
