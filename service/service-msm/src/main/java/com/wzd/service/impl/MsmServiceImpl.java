@@ -41,7 +41,7 @@ public class MsmServiceImpl implements MsmService {
         headers.put("Authorization", "APPCODE " + appcode);
         Map<String, String> querys = new HashMap<String, String>();
         querys.put("mobile", phone);
-        querys.put("param", "**code**:" + code);
+        querys.put("param", "**code**:" + code + ",**minute**:5");
         querys.put("smsSignId", "2e65b1bb3d054466b82f0c9d125465e2");
         querys.put("templateId", "81e8a442ea904694a37d2cec6ea6f2bc");
         Map<String, String> bodys = new HashMap<String, String>();
