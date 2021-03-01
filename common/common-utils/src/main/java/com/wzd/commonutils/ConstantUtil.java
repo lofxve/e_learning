@@ -41,5 +41,5 @@ public class ConstantUtil {
     //初始化密码
     public static final String INIT_PASSWORD = "123456";
     //jwt加密盐
-    public static final String JWT_SECRET = "tanhua";
+    public static final String JWT_SECRET = "eightOClockOnlineEducation";
 }

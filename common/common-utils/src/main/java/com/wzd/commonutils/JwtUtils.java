@@ -18,7 +18,7 @@ public class JwtUtils {
     // 过期时间
     public static final long EXPIRE = 1000 * 60 * 60 * 24;
     // 秘钥
-    public static final String APP_SECRET = "ukc8BDbRigUDaY6pZFfWus2jZWLPHO";
+    public static final String APP_SECRET = ConstantUtil.JWT_SECRET;
 
     /**
      * @return java.lang.String
