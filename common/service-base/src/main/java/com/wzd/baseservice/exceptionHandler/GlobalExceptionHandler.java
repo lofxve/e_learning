@@ -22,8 +22,9 @@ public class GlobalExceptionHandler {
     @ResponseBody
     @ExceptionHandler(Exception.class)
     public R error(Exception e) {
+        log.error(Exceptionutils.getMessage(e));
         e.printStackTrace();
-        return R.error();
+        return R.error().message(Exceptionutils.getMessage(e));
     }
 
     /**
@@ -37,6 +38,7 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public R error(BaseException e) {
         log.error(Exceptionutils.getMessage(e));
+        e.printStackTrace();
         return R.error().message(e.getMsg()).code(e.getCode());
     }
 }

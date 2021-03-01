@@ -1,4 +1,4 @@
-package com.wzd.cmsservice;
+package com.wzd;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
