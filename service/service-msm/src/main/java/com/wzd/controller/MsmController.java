@@ -5,6 +5,7 @@ import com.wzd.commonutils.R;
 import com.wzd.commonutils.RandomUtil;
 import com.wzd.service.MsmService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -20,7 +21,7 @@ import java.util.concurrent.TimeUnit;
  */
 @CrossOrigin
 @RestController
-@Api("阿里云短信")
+@Api(tags = "阿里云短信")
 @RequestMapping("/edumsm/msm")
 public class MsmController {
 
@@ -30,6 +31,7 @@ public class MsmController {
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
 
+    @ApiOperation("发送验证码")
     @GetMapping("send/{phone}")
     public R sendMsm(@PathVariable String phone) {
         // 从redis中获取验证码

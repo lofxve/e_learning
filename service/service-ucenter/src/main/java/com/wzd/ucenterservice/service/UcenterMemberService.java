@@ -2,6 +2,7 @@ package com.wzd.ucenterservice.service;
 
 import com.wzd.ucenterservice.entity.UcenterMember;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.wzd.ucenterservice.entity.vo.RegisterVo;
 
 /**
  * <p>
@@ -14,4 +15,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface UcenterMemberService extends IService<UcenterMember> {
 
     String login(UcenterMember member);
+
+    void register(RegisterVo registerVo);
 }
