@@ -113,15 +113,4 @@ public class VideoServiceImpl implements VideoService {
             e.printStackTrace();
         }
     }
-
-    @Test
-    public  void main() {
-        ArrayList<Integer> integers = new ArrayList<>();
-        integers.add(1);
-        integers.add(2);
-        integers.add(3);
-        integers.add(4);
-        String join = StringUtils.join(integers.toArray(), ",");
-        System.out.println(join);
-    }
 }
