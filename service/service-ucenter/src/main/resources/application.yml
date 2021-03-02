@@ -1,7 +1,8 @@
 mybatis-plus:
   mapper-locations: classpath:com/wzd/ucenterservice/mapper/xml/*.xml
 server:
-  port: 8006
+  #测试微信登录，使用端口8105，服务使用端口8006
+  port: 8150
 spring:
   profiles:
     active: dev
@@ -27,3 +28,8 @@ spring:
         min-idle: 0
     port: 6379
     timeout: 1800000
+wx:
+  open:
+    app_id: wxed9954c01bb89b47
+    app_secret: a7482517235173ddb4083788de60b90e
+    redirect_url: http://guli.shop/api/ucenter/wx/callback
