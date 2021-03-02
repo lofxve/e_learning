@@ -34,26 +34,26 @@ public class UcenterMemberController {
     @PostMapping("login")
     public R loginUser(@RequestBody UcenterMember member) {
         String token = memberService.login(member);
-        return R.ok().data("toke",token);
+        return R.ok().data("token", token);
     }
 
     @ApiOperation(value = "会员注册")
     @PostMapping("register")
-    public R register(@RequestBody RegisterVo registerVo){
+    public R register(@RequestBody RegisterVo registerVo) {
         memberService.register(registerVo);
         return R.ok();
     }
 
     @ApiOperation(value = "根据token获取登录信息")
     @GetMapping("getLoginInfo")
-    public R getLoginInfo(HttpServletRequest request){
+    public R getLoginInfo(HttpServletRequest request) {
         try {
             String memberId = JwtUtils.getMemberIdByJwtToken(request);
             UcenterMember loginInfoVo = memberService.getById(memberId);
             return R.ok().data("item", loginInfoVo);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-            throw new BaseException(20001,"error");
+            throw new BaseException(20001, "error");
         }
     }
 }
