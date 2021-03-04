@@ -7,6 +7,7 @@ import com.wzd.baseservice.exceptionHandler.BaseException;
 import com.wzd.eduservice.entity.EduCourse;
 import com.wzd.eduservice.entity.EduCourseDescription;
 import com.wzd.eduservice.entity.frontvo.CourseQueryVo;
+import com.wzd.eduservice.entity.frontvo.CourseWebVo;
 import com.wzd.eduservice.entity.vo.CourseInfoVo;
 import com.wzd.eduservice.entity.vo.CoursePublishVo;
 import com.wzd.eduservice.entity.vo.CourseQuery;
@@ -222,5 +223,19 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         map.put("hasPrevious", hasPrevious);
 
         return map;
+    }
+
+    @Override
+    public CourseWebVo getBaseCourseInfo(String courseId) {
+        this.updatePageViewCount(courseId);
+        CourseWebVo courseWebVo = baseMapper.getBaseCourseInfo(courseId);
+        return courseWebVo;
+    }
+
+    @Override
+    public void updatePageViewCount(String id) {
+        EduCourse course = baseMapper.selectById(id);
+        course.setViewCount(course.getViewCount() + 1);
+        baseMapper.updateById(course);
     }
 }
