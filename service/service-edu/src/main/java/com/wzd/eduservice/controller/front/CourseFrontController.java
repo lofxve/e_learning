@@ -60,6 +60,8 @@ public class CourseFrontController {
 
         // 查询课程小结和章节
         List<ChapterVo> chapterVideo = chapterService.getChapterVideo(courseId);
+        System.out.println("================================");
+        System.out.println(chapterVideo.toString());
         return R.ok().data("course", courseWebVo).data("chapterVoList", chapterVideo);
     }
 }
