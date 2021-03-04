@@ -3,11 +3,13 @@ package com.wzd.eduservice.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.wzd.eduservice.entity.EduCourse;
+import com.wzd.eduservice.entity.frontvo.CourseQueryVo;
 import com.wzd.eduservice.entity.vo.CourseInfoVo;
 import com.wzd.eduservice.entity.vo.CoursePublishVo;
 import com.wzd.eduservice.entity.vo.CourseQuery;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -34,4 +36,6 @@ public interface EduCourseService extends IService<EduCourse> {
     boolean removeCourseById(String id);
 
     List<EduCourse> getIndexCourse();
+
+    Map<String, Object> pageListWeb(Page<EduCourse> pageParam, CourseQueryVo courseQuery);
 }
