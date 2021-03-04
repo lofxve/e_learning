@@ -4,11 +4,13 @@ package com.wzd.ucenterservice.controller;
 import com.wzd.baseservice.exceptionHandler.BaseException;
 import com.wzd.commonutils.JwtUtils;
 import com.wzd.commonutils.R;
+import com.wzd.commonutils.vo.commentvo.UcenterMemberVo;
 import com.wzd.ucenterservice.entity.UcenterMember;
 import com.wzd.ucenterservice.entity.vo.RegisterVo;
 import com.wzd.ucenterservice.service.UcenterMemberService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -55,6 +57,15 @@ public class UcenterMemberController {
             e.printStackTrace();
             throw new BaseException(20001, "error");
         }
+    }
+    @ApiOperation(value = "根据token字符串获取用户信息")
+    @PostMapping("getInfoUc/{id}")
+    public UcenterMemberVo getInfoUc(@PathVariable String id) {
+        //根据用户id获取用户信息
+        UcenterMember ucenterMember = memberService.getById(id);
+        UcenterMemberVo memberVo = new UcenterMemberVo();
+        BeanUtils.copyProperties(ucenterMember,memberVo);
+        return memberVo;
     }
 }
 
