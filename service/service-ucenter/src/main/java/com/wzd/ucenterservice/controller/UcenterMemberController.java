@@ -5,6 +5,7 @@ import com.wzd.baseservice.exceptionHandler.BaseException;
 import com.wzd.commonutils.JwtUtils;
 import com.wzd.commonutils.R;
 import com.wzd.commonutils.vo.commentvo.UcenterMemberVo;
+import com.wzd.commonutils.vo.order.UcenterMemberOrder;
 import com.wzd.ucenterservice.entity.UcenterMember;
 import com.wzd.ucenterservice.entity.vo.RegisterVo;
 import com.wzd.ucenterservice.service.UcenterMemberService;
@@ -64,6 +65,16 @@ public class UcenterMemberController {
         //根据用户id获取用户信息
         UcenterMember ucenterMember = memberService.getById(id);
         UcenterMemberVo memberVo = new UcenterMemberVo();
+        BeanUtils.copyProperties(ucenterMember,memberVo);
+        return memberVo;
+    }
+
+    @ApiOperation(value = "Order根据token字符串获取用户信息")
+    @PostMapping("getUserInfoOrder/{id}")
+    public UcenterMemberOrder getUserInfoOrder(@PathVariable String id) {
+        //根据用户id获取用户信息
+        UcenterMember ucenterMember = memberService.getById(id);
+        UcenterMemberOrder memberVo = new UcenterMemberOrder();
         BeanUtils.copyProperties(ucenterMember,memberVo);
         return memberVo;
     }

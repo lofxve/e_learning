@@ -2,6 +2,7 @@ package com.wzd.eduservice.controller.front;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wzd.commonutils.R;
+import com.wzd.commonutils.vo.order.CourseWebOrder;
 import com.wzd.eduservice.entity.EduCourse;
 import com.wzd.eduservice.entity.capter.ChapterVo;
 import com.wzd.eduservice.entity.frontvo.CourseQueryVo;
@@ -11,6 +12,7 @@ import com.wzd.eduservice.service.EduCourseService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -60,8 +62,16 @@ public class CourseFrontController {
 
         // 查询课程小结和章节
         List<ChapterVo> chapterVideo = chapterService.getChapterVideo(courseId);
-        System.out.println("================================");
-        System.out.println(chapterVideo.toString());
         return R.ok().data("course", courseWebVo).data("chapterVoList", chapterVideo);
     }
+
+    @ApiOperation(value = "根据id获取课程详情")
+    @PostMapping("getCourseInfoById/{courseId}")
+    public CourseWebOrder getCourseInfoById(@PathVariable String courseId) {
+        CourseWebVo baseCourseInfo = courseService.getBaseCourseInfo(courseId);
+        CourseWebOrder courseWebOrder = new CourseWebOrder();
+        BeanUtils.copyProperties(baseCourseInfo, courseWebOrder);
+        return courseWebOrder;
+    }
+
 }

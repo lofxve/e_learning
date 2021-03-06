@@ -28,6 +28,11 @@ spring:
         min-idle: 0
     port: 6379
     timeout: 1800000
+  # nacos服务地址
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
 wx:
   open:
     app_id: wxed9954c01bb89b47

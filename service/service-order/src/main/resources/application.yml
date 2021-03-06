@@ -11,8 +11,6 @@ hystrix:
           thread:
             timeoutInMilliseconds: 3000
 mybatis-plus:
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   mapper-locations: classpath:com/atguigu/orderservice/mapper/xml/*.xml
 server:
   port: 8007
