@@ -69,6 +69,8 @@ public class PayLogServiceImpl extends ServiceImpl<PayLogMapper, PayLog> impleme
             map.put("total_fee", order.getTotalFee());
             map.put("result_code", resultMap.get("result_code"));
             map.put("code_url", resultMap.get("code_url"));
+            // TODO: 2021/3/6 模拟微信支付
+//            map.put("code_url", "https://e-learning-lofxve.oss-cn-beijing.aliyuncs.com/data/doc/e-learning/%E5%BE%AE%E4%BF%A1%E6%94%AF%E4%BB%98.png");
 
             //微信支付二维码2小时过期，可采取2小时未支付取消订单
             //redisTemplate.opsForValue().set(orderNo, map, 120, TimeUnit.MINUTES);
