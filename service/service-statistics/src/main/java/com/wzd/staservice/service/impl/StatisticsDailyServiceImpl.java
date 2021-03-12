@@ -10,6 +10,11 @@ import org.apache.commons.lang3.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * <p>
  * 网站统计日数据 服务实现类
@@ -39,5 +44,42 @@ public class StatisticsDailyServiceImpl extends ServiceImpl<StatisticsDailyMappe
         statisticsDaily.setVideoViewNum(RandomUtils.nextInt(100, 200));
         statisticsDaily.setCourseNum(RandomUtils.nextInt(100, 200));
         baseMapper.insert(statisticsDaily);
+    }
+
+    @Override
+    public Map chartShowsDay(String begin, String end, String type) {
+        QueryWrapper<StatisticsDaily> queryWrapper = new QueryWrapper<>();
+        queryWrapper.between("date_calculated", begin, end);
+        queryWrapper.select(type, "date_calculated");
+        queryWrapper.orderByAsc("date_calculated");
+        List<StatisticsDaily> dayList = baseMapper.selectList(queryWrapper);
+
+        Map<String, Object> map = new HashMap<>();
+        List<Integer> dataList = new ArrayList<Integer>();
+        List<String> dateList = new ArrayList<String>();
+        map.put("dataList", dataList);
+        map.put("dateList", dateList);
+
+        for (int i = 0; i < dayList.size(); i++) {
+            StatisticsDaily daily = dayList.get(i);
+            dateList.add(daily.getDateCalculated());
+            switch (type) {
+                case "register_num":
+                    dataList.add(daily.getRegisterNum());
+                    break;
+                case "login_num":
+                    dataList.add(daily.getLoginNum());
+                    break;
+                case "video_view_num":
+                    dataList.add(daily.getVideoViewNum());
+                    break;
+                case "course_num":
+                    dataList.add(daily.getCourseNum());
+                    break;
+                default:
+                    break;
+            }
+        }
+        return map;
     }
 }
