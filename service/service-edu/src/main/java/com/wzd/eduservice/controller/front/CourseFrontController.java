@@ -1,8 +1,10 @@
 package com.wzd.eduservice.controller.front;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.wzd.commonutils.JwtUtils;
 import com.wzd.commonutils.R;
 import com.wzd.commonutils.vo.order.CourseWebOrder;
+import com.wzd.eduservice.client.OrderClient;
 import com.wzd.eduservice.entity.EduCourse;
 import com.wzd.eduservice.entity.capter.ChapterVo;
 import com.wzd.eduservice.entity.frontvo.CourseQueryVo;
@@ -12,10 +14,12 @@ import com.wzd.eduservice.service.EduCourseService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -35,6 +39,9 @@ public class CourseFrontController {
 
     @Autowired
     private EduChapterService chapterService;
+
+    @Autowired
+    private OrderClient orderClient;
 
     @ApiOperation(value = "分页课程列表")
     @PostMapping(value = "courseFrontPageList/{page}/{limit}")
@@ -56,13 +63,20 @@ public class CourseFrontController {
     @PostMapping(value = "getFrontCourseInfo/{courseId}")
     public R pageList(
             @ApiParam(name = "courseId", value = "课程id", required = true)
-            @PathVariable String courseId) {
+            @PathVariable String courseId, HttpServletRequest request) {
         // 查询课程基本信息
         CourseWebVo courseWebVo = courseService.getBaseCourseInfo(courseId);
 
         // 查询课程小结和章节
         List<ChapterVo> chapterVideo = chapterService.getChapterVideo(courseId);
-        return R.ok().data("course", courseWebVo).data("chapterVoList", chapterVideo);
+
+        //远程调用，判断课程是否被购买
+        String memberIdByJwtToken = JwtUtils.getMemberIdByJwtToken(request);
+        if(StringUtils.isEmpty(memberIdByJwtToken)) {
+            return R.error().code(28004).message("请登录");
+        }
+        boolean buyCourse = orderClient.isBuyCourse(memberIdByJwtToken, courseId);
+        return R.ok().data("course", courseWebVo).data("chapterVoList", chapterVideo).data("isbuy", buyCourse);
     }
 
     @ApiOperation(value = "根据id获取课程详情")

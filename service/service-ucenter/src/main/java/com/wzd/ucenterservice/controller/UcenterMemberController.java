@@ -11,6 +11,7 @@ import com.wzd.ucenterservice.entity.vo.RegisterVo;
 import com.wzd.ucenterservice.service.UcenterMemberService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -52,6 +53,9 @@ public class UcenterMemberController {
     public R getLoginInfo(HttpServletRequest request) {
         try {
             String memberId = JwtUtils.getMemberIdByJwtToken(request);
+            if(StringUtils.isEmpty(memberId)) {
+                return R.error().code(28004).message("请登录");
+            }
             UcenterMember loginInfoVo = memberService.getById(memberId);
             return R.ok().data("item", loginInfoVo);
         } catch (Exception e) {
