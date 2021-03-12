@@ -16,8 +16,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 @SpringBootApplication
 @MapperScan("com.wzd.staservice.mapper")
-@EnableDiscoveryClient
-@EnableFeignClients
+@EnableDiscoveryClient  // 服务注册
+@EnableFeignClients // 服务发现
 public class StaApplication {
     public static void main(String[] args) {
         SpringApplication.run(StaApplication.class, args);

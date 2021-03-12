@@ -1,9 +1,12 @@
 package com.wzd.staservice.controller;
 
 
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RestController;
+import com.wzd.commonutils.R;
+import com.wzd.staservice.service.StatisticsDailyService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * <p>
@@ -13,9 +16,19 @@ import org.springframework.web.bind.annotation.RestController;
  * @author wzd
  * @since 2021-03-12
  */
+@Api("统计分析")
+@CrossOrigin
 @RestController
-@RequestMapping("/staservice/daily")
+@RequestMapping("/admin/staservice/daily")
 public class StatisticsDailyController {
+    @Autowired
+    private StatisticsDailyService statisticsDailyService;
 
+    @ApiOperation("统计每一天的注册人数")
+    @PostMapping("countRegister/{day}")
+    public R countRegister(@PathVariable String day) {
+        statisticsDailyService.createStatisticsByDay(day);
+        return R.ok();
+    }
 }
 
