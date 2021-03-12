@@ -103,4 +103,10 @@ public class UcenterMemberServiceImpl extends ServiceImpl<UcenterMemberMapper, U
         UcenterMember member = baseMapper.selectOne(queryWrapper);
         return member;
     }
+
+    @Override
+    public Integer countRegisterDay(String day) {
+        Integer integer = baseMapper.countRegisterDay(day);
+        return integer;
+    }
 }
